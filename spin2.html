@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Wheel of Fortune</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .wheel-container {
+            position: relative;
+            margin: 50px auto;
+            width: 300px;
+            height: 300px;
+        }
+
+        .wheel-of-fortune {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wheel-of-fortune li {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background-color: deepskyblue;
+            transform-origin: 100% 100%;
+            list-style: none;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Positioning each slice at the correct angle */
+        .wheel-of-fortune li:nth-child(1) { transform: rotate(0deg); }
+        .wheel-of-fortune li:nth-child(2) { transform: rotate(30deg); }
+        .wheel-of-fortune li:nth-child(3) { transform: rotate(60deg); }
+        .wheel-of-fortune li:nth-child(4) { transform: rotate(90deg); }
+        .wheel-of-fortune li:nth-child(5) { transform: rotate(120deg); }
+        .wheel-of-fortune li:nth-child(6) { transform: rotate(150deg); }
+        .wheel-of-fortune li:nth-child(7) { transform: rotate(180deg); }
+        .wheel-of-fortune li:nth-child(8) { transform: rotate(210deg); }
+        .wheel-of-fortune li:nth-child(9) { transform: rotate(240deg); }
+        .wheel-of-fortune li:nth-child(10) { transform: rotate(270deg); }
+        .wheel-of-fortune li:nth-child(11) { transform: rotate(300deg); }
+        .wheel-of-fortune li:nth-child(12) { transform: rotate(330deg); }
+
+        .spin-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wheel-container">
+        <button class="spin-button">Spin</button>
+        <ul class="wheel-of-fortune">
+            <li>$1000</li>
+            <li>$2000</li>
+            <li>$3000</li>
+            <li>$4000</li>
+            <li>$5000</li>
+            <li>$6000</li>
+            <li>$7000</li>
+            <li>$8000</li>
+            <li>$9000</li>
+            <li>$10000</li>
+            <li>$11000</li>
+            <li>$12000</li>
+        </ul>
+    </div>
+
+    <script>
+        function wheelOfFortune(selector) {
+            const node = document.querySelector(selector);
+            if (!node) return;
+
+            const spin = node.querySelector('.spin-button');
+            const wheel = node.querySelector('ul');
+            let animation;
+            let previousEndDegree = 0;
+
+            spin.addEventListener('click', () => {
+                if (animation) {
+                    animation.cancel();
+                }
+
+                const randomAdditionalDegrees = Math.random() * 360 + 1800;
+                const newEndDegree = previousEndDegree + randomAdditionalDegrees;
+
+                animation = wheel.animate([
+                    { transform: `rotate(${previousEndDegree}deg)` },
+                    { transform: `rotate(${newEndDegree}deg)` }
+                ], {
+                    duration: 4000,
+                    direction: 'normal',
+                    easing: 'cubic-bezier(0.440, -0.205, 0.000, 1.130)',
+                    fill: 'forwards',
+                    iterations: 1
+                });
+
+                previousEndDegree = newEndDegree;
+            });
+        }
+
+        wheelOfFortune('.wheel-container');
+    </script>
+</body>
+
+</html>
